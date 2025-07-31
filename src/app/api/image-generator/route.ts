@@ -13,7 +13,14 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Use user-provided API key if available, otherwise fallback to environment variable
+    if (prompt.length > 512) {
+      return NextResponse.json(
+        { error: "Prompt exceeds 512-character limit" },
+        { status: 400 }
+      )
+    }
+
+        // Use user-provided API key if available, otherwise fallback to environment variable
     const apiKey = userApiKey || process.env.GOOGLE_GEMINI_API_KEY
 
     if (!apiKey) {

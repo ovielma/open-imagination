@@ -138,10 +138,7 @@ export function PromptBar({
                         Video
                         </Button>
                     </div>
-                    {/* Char counter */}
-                    <div className="absolute bottom-0 right-2 text-xs py-1 select-none" style={{color: prompt.length>=WARN_THRESHOLD ? (prompt.length>CHAR_LIMIT? 'red' : 'orange') : 'inherit'}}>
-                      {prompt.length}/{CHAR_LIMIT}
-                    </div>
+                    
                     </motion.div>
                 </div>
 

@@ -87,6 +87,21 @@ npm run build
 npx vercel --prod
 ```
 
+### Using Vercel CLI
+
+#### Install Vercel CLI
+```npm i -g vercel```
+
+#### Login to Vercel
+```vercel login```
+
+#### Add environment variables (optional)
+```vercel env add GEMINI_API_KEY```
+```vercel env add NEXT_PUBLIC_APP_URL```
+
+#### Deploy
+```vercel --prod```
+
 ## 🐳 Docker Deployment
 
 ```

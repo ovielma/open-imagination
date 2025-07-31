@@ -6,6 +6,7 @@ import { X, Download, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
+import { useToast } from '@/hooks/use-toast';
 
 interface MediaItem {
   id: string;
@@ -31,9 +32,20 @@ export function ExpandedMediaView({
   initialIndex,
   onImageToVideo
 }: ExpandedMediaViewProps) {
+  const { toast } = useToast();
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
   const filmStripRef = useRef<HTMLDivElement>(null);
   const currentItem = mediaItems[currentIndex];
+
+  // Show toast when video becomes current item
+  useEffect(() => {
+    if (mediaItems[currentIndex]?.type === 'video') {
+      toast({
+        title: 'Muted by default',
+        description: 'Tap the speaker icon to unmute and hear audio.',
+      });
+    }
+  }, [currentIndex, mediaItems, toast]);
 
   // Update current index when initial index changes
   useEffect(() => {
@@ -196,6 +208,7 @@ export function ExpandedMediaView({
                     controls
                     autoPlay
                     loop
+                    muted
                     className="max-w-full max-h-full object-contain"
                   />
                 )}
@@ -267,7 +280,6 @@ export function ExpandedMediaView({
               }}
             >
               {mediaItems.map((item, index) => {
-                const distance = Math.abs(index - currentIndex);
                 const isCurrent = index === currentIndex;
 
                 const scale = isCurrent ? 1.15 : 1;
@@ -299,6 +311,7 @@ export function ExpandedMediaView({
                       <video
                         src={item.url}
                         className="w-12 h-12 object-cover rounded-sm"
+                        muted
                       />
                     )}
                   </motion.div>
@@ -382,6 +395,7 @@ export function ExpandedMediaView({
                         controls
                         autoPlay
                         loop
+                        muted
                         className="max-w-full max-h-full object-contain"
                       />
                     )}
@@ -489,7 +503,6 @@ export function ExpandedMediaView({
                 }}
               >
                 {mediaItems.map((item, index) => {
-                  const distance = Math.abs(index - currentIndex);
                   const isCurrent = index === currentIndex;
 
                   const scale = isCurrent ? 1.2 : 1;
