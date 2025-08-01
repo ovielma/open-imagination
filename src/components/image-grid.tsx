@@ -48,9 +48,10 @@ export function ImageGrid({ generation, onImageToVideo, onViewFullscreen }: Imag
     return `${Math.floor(diffInMinutes / 1440)}d ago`;
   };
 
-  const getFirstSentence = (text: string) => {
-    const match = text.match(/^[^.!?]*[.!?]/);
-    return match ? match[0].trim() : text.split(' ').slice(0, 15).join(' ') + (text.split(' ').length > 15 ? '...' : '');
+  const getPreview = (text: string) => {
+    if (!text) return "";
+    const preview = text.slice(0, 75);
+    return text.length > 75 ? `${preview}…` : preview;
   };
 
   const handleDownload = async (imageUrl: string, index: number) => {
@@ -225,7 +226,7 @@ export function ImageGrid({ generation, onImageToVideo, onViewFullscreen }: Imag
             {/* Prompt */}
             <div>
               <h3 className="font-medium text-foreground text-lg leading-relaxed">
-                {getFirstSentence(generation.prompt)}
+                {getPreview(generation.prompt)}
               </h3>
             </div>
             
