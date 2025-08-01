@@ -37,7 +37,11 @@ export function PromptBar({
   }
   
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey && prompt.trim() && onGenerate) {
+    // Support multiple key variations for mobile devices
+    const submitKeys = ['Enter', 'Return', 'Go', 'Done', 'Send'];
+    const isSubmitKey = submitKeys.includes(e.key);
+    
+    if (isSubmitKey && !e.shiftKey && prompt.trim() && onGenerate) {
       e.preventDefault()
       onGenerate(generationMode, prompt.trim())
     }

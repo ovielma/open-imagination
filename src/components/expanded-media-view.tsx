@@ -183,8 +183,8 @@ export function ExpandedMediaView({
           </div>
 
           {/* Media Display */}
-          <div className="flex-1 flex items-center justify-center p-4 min-h-0">
-            <div className="w-full h-full max-w-4xl max-h-full relative">
+          <div className="flex-1 flex items-center justify-center p-2 min-h-0">
+            <div className="w-full h-full relative">
               <motion.div
                 key={currentIndex}
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -199,7 +199,8 @@ export function ExpandedMediaView({
                       alt={currentItem.prompt}
                       fill
                       className="object-contain"
-                      sizes="(max-width: 768px) 100vw, 80vw"
+                      sizes="100vw"
+                      priority
                     />
                   </div>
                 ) : (
@@ -209,7 +210,7 @@ export function ExpandedMediaView({
                     autoPlay
                     loop
                     muted
-                    className="max-w-full max-h-full object-contain"
+                    className="w-full h-full object-contain"
                   />
                 )}
               </motion.div>
@@ -370,8 +371,8 @@ export function ExpandedMediaView({
             </div>
 
                                       {/* Media Display */}
-              <div className="flex-1 flex items-center justify-center p-8 min-h-0">
-                <div className="w-full h-full max-w-4xl max-h-full relative">
+              <div className="flex-1 flex items-center justify-center p-4 min-h-0">
+                <div className="w-full h-full relative">
                   <motion.div
                     key={currentIndex}
                     initial={{ opacity: 0, scale: 0.9 }}
@@ -386,7 +387,8 @@ export function ExpandedMediaView({
                           alt={currentItem.prompt}
                           fill
                           className="object-contain"
-                          sizes="(max-width: 768px) 100vw, 60vw"
+                          sizes="(max-width: 768px) 100vw, 70vw"
+                          priority
                         />
                       </div>
                     ) : (
@@ -396,7 +398,7 @@ export function ExpandedMediaView({
                         autoPlay
                         loop
                         muted
-                        className="max-w-full max-h-full object-contain"
+                        className="w-full h-full object-contain"
                       />
                     )}
                   </motion.div>
