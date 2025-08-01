@@ -49,7 +49,8 @@ const createSampleGenerations = (): Generation[] => [
     id: "sample-video-1",
     prompt: "A person interacts with OpenAI's AI companion — a screen‑less, voice‑first wearable that clips to the ear and can extend into lightweight glasses to project a subtle AR UI. The device uses contextual awareness to assist with daily tasks, learning, and creativity. Inspired by non‑invasive neural interfaces (no surgery shown).",
     videos: [
-      "/sample-videos/ai-device.mp4"
+      "/sample-videos/ai-device.mp4",
+      "/sample-videos/ai-device2.mp4"
     ],
     timestamp: new Date(Date.now() - 1000 * 60 * 2), // 2 minutes ago
     isLoading: false
@@ -59,7 +60,8 @@ const createSampleGenerations = (): Generation[] => [
     id: "sample-video-2",
     prompt: "A futuristic human‑made starship (sleek composite hull, blue ion trails, modular cargo rings) arrives at a sprawling orbital space station. The station’s outer concourse features a glowing “Drive‑Thru Coffee”kiosk with tiny service drones passing beverages to cockpit hatches. Planet Mars hangs large and rust‑red in the distance, slowly drifting to show parallax.",
     videos: [
-      "/sample-videos/space-coffee-shop.mp4"
+      "/sample-videos/space-coffee-shop.mp4",
+      "/sample-videos/space-coffee-shop2.mp4",
     ],
     timestamp: new Date(Date.now() - 1000 * 60 * 10), // 10 minutes ago
     isLoading: false
@@ -215,6 +217,17 @@ export function ContentGrid({
     // Get user's API key from localStorage
     const userApiKey = sessionStorage.getItem("gemini_api_key");
     
+    // Check if user has provided an API key
+    if (!userApiKey) {
+      toast({
+        title: "API Key Required",
+        description: "Please add your Google Gemini API key in settings to generate content.",
+        variant: "destructive",
+      });
+      setShowApiKeyDialog(true);
+      return;
+    }
+    
     const loadingGeneration: LoadingGeneration = {
       id: `loading-${Date.now()}`,
       prompt,
@@ -307,6 +320,17 @@ export function ContentGrid({
   const handleImageToVideo = async (imageUrl: string, imageBytes: string, prompt: string) => {
     // Get user's API key from localStorage
     const userApiKey = sessionStorage.getItem("gemini_api_key");
+    
+    // Check if user has provided an API key
+    if (!userApiKey) {
+      toast({
+        title: "API Key Required",
+        description: "Please add your Google Gemini API key in settings to generate content.",
+        variant: "destructive",
+      });
+      setShowApiKeyDialog(true);
+      return;
+    }
     
     const loadingGeneration: LoadingGeneration = {
       id: `video-loading-${Date.now()}`,

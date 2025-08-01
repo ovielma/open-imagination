@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { DownloadIcon, ExpandIcon, ClockIcon } from "lucide-react";
 import { motion } from "motion/react";
 import Image from "next/image";
+import { AutoPlayVideo } from "@/components/auto-play-video";
 
 interface VideoGeneration {
   id: string;
@@ -147,17 +148,20 @@ useEffect(() => {
                     className="absolute inset-0"
                   >
                     {/* Video player */}
-                    <video 
-                      ref={(el) => { videoRefs.current[index] = el; }}
+                    <AutoPlayVideo
+                      onRefSet={(elementObserved) => {
+                        videoRefs.current[index] = elementObserved;
+                      }}
                       className="absolute inset-0 w-full h-full object-cover"
                       poster={generation.sourceImage}
                       preload="metadata"
                       muted
                       loop
+                      playsInline // required for mobile
                     >
                       <source src={videoUrl} type="video/mp4" />
                       Your browser does not support the video tag.
-                    </video>
+                    </AutoPlayVideo>
                     
                     {/* Controls at bottom - only visible on hover */}
                     <motion.div

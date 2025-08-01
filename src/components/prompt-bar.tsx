@@ -18,8 +18,8 @@ export function PromptBar({
   isGenerating = false
 }: PromptBarProps) {
   const [prompt, setPrompt] = useState("")
-  const CHAR_LIMIT = 512;
-  const WARN_THRESHOLD = 450;
+  const CHAR_LIMIT = 2000;
+  const WARN_THRESHOLD = 1950;
   const [generationMode, setGenerationMode] = useState<"image" | "video">("image")
   const [isHovered, setIsHovered] = useState(false)
   const [isFocused, setIsFocused] = useState(false)
