@@ -28,6 +28,14 @@ export function PromptBar({
   
   const showRainbow = !isGenerating
   
+  const submitPrompt = () => {
+    const trimmedPrompt = prompt.trim()
+    if (!trimmedPrompt || !onGenerate || prompt.length > CHAR_LIMIT) {
+      return
+    }
+    onGenerate(generationMode, trimmedPrompt)
+  }
+  
   const handlePromptChange = (value: string) => {
     if (value.length > CHAR_LIMIT) return;
     setPrompt(value)
@@ -36,21 +44,21 @@ export function PromptBar({
     setTimeout(() => setIsTyping(false), 1000)
   }
   
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    // Support multiple key variations for mobile devices
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // Support multiple key variations for mobile devices and prevent shift-submission
     const submitKeys = ['Enter', 'Return', 'Go', 'Done', 'Send'];
-    const isSubmitKey = submitKeys.includes(e.key);
-    
-    if (isSubmitKey && !e.shiftKey && prompt.trim() && onGenerate) {
+    if (submitKeys.includes(e.key) && e.shiftKey) {
       e.preventDefault()
-      onGenerate(generationMode, prompt.trim())
     }
   }
   
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    submitPrompt()
+  }
+  
   const handleGenerate = () => {
-    if (prompt.trim() && onGenerate && prompt.length <= CHAR_LIMIT) {
-      onGenerate(generationMode, prompt.trim())
-    }
+    submitPrompt()
   }
   
   return (
@@ -73,8 +81,9 @@ export function PromptBar({
                 </div>
                 {/* Center Input Bar - Made as wide as possible */}
                 <div className="flex-1 max-w-4xl mx-auto">
-                    <motion.div 
+                    <motion.form 
                     className="relative p-[2px] rounded-lg"
+                    onSubmit={handleSubmit}
                     onHoverStart={() => setIsHovered(true)}
                     onHoverEnd={() => setIsHovered(false)}
                     animate={{
@@ -102,10 +111,11 @@ export function PromptBar({
                         value={prompt}
                         maxLength={CHAR_LIMIT}
                         onChange={(e) => handlePromptChange(e.target.value)}
-                        onKeyUp={handleKeyPress}
+                        onKeyDown={handleKeyPress}
                         onFocus={() => setIsFocused(true)}
                         onBlur={() => setIsFocused(false)}
                         disabled={isGenerating}
+                        enterKeyHint="go"
                         className="w-full bg-muted border-0 placeholder-muted-foreground pr-32 h-12 text-sm overflow-x-auto rounded-md"
                         style={{
                         textOverflow: 'clip',
@@ -114,6 +124,7 @@ export function PromptBar({
                     />
                     <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center gap-1 bg-muted pl-2">
                         <Button
+                        type="button"
                         size="sm"
                         variant={generationMode === "image" ? "default" : "ghost"}
                         onClick={() => setGenerationMode("image")}
@@ -128,6 +139,7 @@ export function PromptBar({
                         Image
                         </Button>
                         <Button
+                        type="button"
                         size="sm"
                         variant={generationMode === "video" ? "default" : "ghost"}
                         onClick={() => setGenerationMode("video")}
@@ -143,12 +155,13 @@ export function PromptBar({
                         </Button>
                     </div>
                     
-                    </motion.div>
+                    </motion.form>
                 </div>
 
                 {/* Settings */}
                 <div className="flex items-center flex-shrink-0">
                     <Button
+                    type="button"
                     variant="ghost"
                     size="sm"
                         onClick={() => setShowSettings(true)}
@@ -175,8 +188,9 @@ export function PromptBar({
           />
         </div>
         {/* Input bar */}
-        <motion.div 
+        <motion.form 
           className="relative p-[2px] rounded-lg"
+          onSubmit={handleSubmit}
           onHoverStart={() => setIsHovered(true)}
           onHoverEnd={() => setIsHovered(false)}
           animate={{
@@ -203,22 +217,24 @@ export function PromptBar({
             placeholder="Describe your imagination..."
             value={prompt}
             onChange={(e) => handlePromptChange(e.target.value)}
-            onKeyUp={handleKeyPress}
+            onKeyDown={handleKeyPress}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             disabled={isGenerating}
+            enterKeyHint="go"
             className="w-full bg-muted border-0 placeholder-muted-foreground h-12 text-base overflow-x-auto rounded-md"
             style={{
               textOverflow: 'clip',
               whiteSpace: 'nowrap'
             }}
           />
-        </motion.div>
+        </motion.form>
 
         {/* Buttons and settings below input */}
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2 flex-1">
             <Button
+              type="button"
               size="sm"
               variant={generationMode === "image" ? "default" : "ghost"}
               onClick={() => setGenerationMode("image")}
@@ -233,6 +249,7 @@ export function PromptBar({
               Image
             </Button>
             <Button
+              type="button"
               size="sm"
               variant={generationMode === "video" ? "default" : "ghost"}
               onClick={() => setGenerationMode("video")}
@@ -248,6 +265,7 @@ export function PromptBar({
             </Button>
           </div>
           <Button
+            type="button"
             variant="ghost"
             size="sm"
             onClick={() => setShowSettings(true)}
